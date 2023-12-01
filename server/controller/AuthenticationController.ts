@@ -10,12 +10,13 @@ class AuthenticationController{
             
             const token=await new AuthenticationService().login(email,password)
 
-            if (!token){
-                return res.status(400).json({
-                    status: "Bad Request!",
+            if (token===""){
+                return res.status(403).json({
+                    status: "Bad Requestt!",
                     message: "Incorrect Email or Password",
                   });
             }
+
             const loginToken = { type: "Bearer", token: token };
             return res.status(200).json({
                 status: "Ok!",

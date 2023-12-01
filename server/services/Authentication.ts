@@ -24,23 +24,21 @@ export class AuthenticationService{
         })
 
         if(!user){
-            throw new Error("Incorrect Email or Password")
+            return ""
         }
         
         const isMatch= await Authentication.comparePassword(password,user.password)
-        await bcrypt.compare(password, user.password)
-
+    
         if(isMatch){
-
             const token=Authentication.generateToken(user.id,user.name,user.email)
             return token
 
+
         }
         return ""
-        
-    
 
     }
+
     async register(name:string,email:string,password:string):Promise<void>{
 
         try {

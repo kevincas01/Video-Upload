@@ -6,19 +6,20 @@ import { prisma } from "./db";
 import cors from 'cors'
 
 import AuthenticateRouter from "./routes/AuthenticateRouter";
-import {usersRouter} from './routes/users'
 
+import FeedRouter from './routes/FeedRouter';
 const app:Express = express();
 
 app.use(cors());
 app.listen(3005)
+
 
 app.use(express.json())
 
 app.use('/authenticate',AuthenticateRouter)
 
 //Users Route
-app.use('/users',usersRouter)
+app.use('/feed',FeedRouter)
 
 //Feed Route
 
