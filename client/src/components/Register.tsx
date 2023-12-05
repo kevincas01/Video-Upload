@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const Register = () => {
+
+  const navigate=useNavigate()
   const [name,setName]=useState("")
   const [email,setEmail]=useState("")
   const [password,setPassword]=useState("")
@@ -8,7 +11,7 @@ const Register = () => {
 
 
   const handleRegister = async () => {
-    console.log("Registering")
+
     console.log("registering",name)
     if (!name || !email|| !password||!password2){
         console.log("Field misssing")
@@ -25,10 +28,11 @@ const Register = () => {
             });
       
             console.log(response.data); // Handle successful login response
+            navigate('/')
+
           } catch (error) {
             console.log("Axios error:", error);
           }
-        
     }
     
   };

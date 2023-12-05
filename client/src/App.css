@@ -56,4 +56,46 @@
   gap: 5px;
 }
 
+/* Upload page */
+.upload-container{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  
+}
 
+
+
+.tag-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tags {
+  display: flex;
+  gap: 8px;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  background-color: cyan;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.remove-tag {
+  background-color: #ffcccc;
+  color: #ff0000;
+  border: none;
+  margin-left: 4px;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+  display: none;
+}
+
+.tag:hover .remove-tag {
+  display: inline;
+}
