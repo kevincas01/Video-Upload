@@ -1,7 +1,9 @@
 import bcrypt from 'bcrypt'
 
+
 import { prisma } from "../db";
 import Authentication from "../utils/Authentication";
+import {UserDbMethods} from '../database/UserMethods'
 
 interface IAuthenticationService {
     login(email: string, password: string): Promise<string>;
@@ -17,11 +19,7 @@ export class AuthenticationService{
 
     async login(email: string, password: string): Promise<string> {
 
-        const user = await prisma.user.findUnique({
-            where: {
-                email: email
-            }
-        })
+        const user = await new UserDbMethods().getByEmail(email)
 
         if(!user){
             return ""
@@ -32,8 +30,6 @@ export class AuthenticationService{
         if(isMatch){
             const token=Authentication.generateToken(user.id,user.name,user.email)
             return token
-
-
         }
         return ""
 
