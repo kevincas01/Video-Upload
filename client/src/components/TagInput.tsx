@@ -27,9 +27,10 @@ const TagInput: React.FC<TagInputProps> = ({onTagsChange}) => {
   };
 
   return (
-    <div className="tag-input">
+    <div >
       <form onSubmit={handleAddTag}>
         <input
+          id="tag-input"
           type="text"
           placeholder="Enter a tag"
           value={newTag}
