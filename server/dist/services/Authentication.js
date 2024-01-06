@@ -15,11 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthenticationService = void 0;
 const db_1 = require("../db");
 const Authentication_1 = __importDefault(require("../utils/Authentication"));
-const methods_1 = require("../database/methods");
+const UserMethods_1 = require("../database/UserMethods");
 class AuthenticationService {
     login(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield new methods_1.UserDbMethods().getByEmail(email);
+            const user = yield new UserMethods_1.UserDbMethods().getByEmail(email);
             if (!user) {
                 return "";
             }

@@ -1,0 +1,17 @@
+
+const videos = await prisma.video.findMany({
+      where: {
+        viewability: viewability.toLowerCase(),
+        title: {
+          contains: search, // Use the contains filter for the title field
+        },
+      },
+      orderBy: {
+        [sortBy]: sortOrder.toLowerCase(),
+      },
+      skip: (page - 1) * pageSize,
+      take: +pageSize,
+});
+
+
+pagination idea request
