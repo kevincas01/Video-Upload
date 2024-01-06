@@ -5,12 +5,12 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
 } from "react-router-dom";
 
 import Login from './components/Login';
 import Register from './components/Register';
 import Feed from './components/Feed';
+import Upload from './components/Upload';
 
 function App() {
 
@@ -27,6 +27,7 @@ function App() {
 
         <Route path='/' element={<Login/>} />
         <Route path='/feed' element={<Feed/>} />
+        <Route path='/upload' element={<Upload/>} />
         <Route path='/register' element={<Register/>} />
 
       </Routes>
