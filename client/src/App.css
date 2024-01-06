@@ -39,6 +39,21 @@
 
 
 
+.logout{
+  all: unset;
+  padding:10px;
+  border-radius:10px;
+
+  border: 2px solid black;
+
+  font-size: 20px;
+  color:black;
+}
+.logout:hover{
+  color:black;
+  background-color: cyan;
+}
+
 /* Login page */
 .login-container{
   display: flex;
@@ -59,18 +74,21 @@
 /* Upload page */
 .upload-container{
   display: flex;
-  flex-direction: column;
-  width: 50%;
+  flex-wrap: wrap;
+  justify-content: space-around;
   
 }
 
-
-
-.tag-input {
+.file-selection-container{
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  height: 75vh;
 }
+
+
+
 
 .tags {
   display: flex;
@@ -80,9 +98,11 @@
 .tag {
   display: flex;
   align-items: center;
-  background-color: cyan;
+  background-color: rgb(132, 131, 131);;
   padding: 8px;
   border-radius: 8px;
+  color:white;
+  font-weight: 500;
 }
 
 .remove-tag {
@@ -98,4 +118,237 @@
 
 .tag:hover .remove-tag {
   display: inline;
+}
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 20px;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  border: 1px solid #ccc;
+  padding: 15px 20px;
+  width: 500px;
+}
+
+.search-button {
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  background-color: #61dafb;
+  color: #fff;
+  font-size: 20px;
+  border: 1px solid #61dafb;
+  padding:15px 20px;
+  cursor: pointer;
+}
+.search-input:hover,
+.search-input:focus,
+.search-button:hover,
+.search-button:focus {
+  outline: none;
+  border-color: #0056b3;
+}
+.feed-container{
+  display: flex;
+  flex-wrap: wrap;
+  
+  gap: 16px 50px;
+  justify-content: center;
+}
+
+.preview-video-container{
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+}
+
+.preview-video-details{
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+
+}
+
+.thumbnail{
+  border-radius: 20px;
+  height: auto;
+  width: 25vw;
+}
+
+
+
+#details-userPic{
+  border-radius: 50%;
+  overflow: hidden;
+  height:50px;
+  width: 50px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.details-picture img {
+ margin-top: 10px ;
+}
+.details-text{
+  margin-left: 10px;
+}
+.preview-video-details h2,
+.preview-video-details p {
+  margin: 3px;
+  word-wrap: break-word;
+  max-width: calc(25vw - 60px);
+}
+
+
+
+
+.upload-button{
+  all:unset;
+  border: 3px solid cyan;
+  border-radius: 10px;
+  padding:10px;
+
+  position: absolute;
+  right:10px;
+  top:10px;
+
+}
+
+@media (max-width: 767px) {
+
+  .search-input {
+    font-size: 10px;
+    padding: 5px;
+    width: 150px;
+  }
+  .search-button {
+    font-size: 10px;
+    padding: 5px;
+  }
+
+  .feed-container {
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center; /* Optional: Center items horizontally in column layout */
+  }
+  .mobile-thumbnail {
+    width: 75vw;
+    /* Add any other specific styles for mobile thumbnails */
+  }
+
+  .preview-video-container-mobile{
+    display: flex;
+    flex-direction: column;
+    width: 75vw;
+  }
+  .preview-video-details h2,
+  .preview-video-details p {
+    max-width: calc(75vw - 60px);
+}
+
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Add your styles for medium-sized screens here */
+  h1 {
+    max-width: 500px; /* Adjust the max-width to your desired value for medium screens */
+  }
+}
+
+
+
+
+
+
+
+/*
+upload element
+
+
+*/
+
+.input-container{
+  width: 50vw;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+}
+
+.title-container,.tags-container{
+  width: 75%;
+  height: fit-content;
+  border: 1px solid #6e6e6e;
+  border-radius: 10px;
+  padding:15px;
+  position:relative
+}
+
+
+
+.description-container{
+  width: 75%;
+  min-height: 200px;
+  height: fit-content;
+  border: 1px solid #6e6e6e;
+  border-radius: 10px;
+  padding:15px;
+  position:relative
+}
+
+
+
+#title-input, #description-input,#tag-input{
+  font-size: 25px;
+  border: none;
+  outline: none;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+.count{
+  position: absolute;
+  right: 10px;
+  bottom:10px;
+}
+
+
+#title-input[contentEditable="true"]:empty:before {
+  content: "Add a title";
+  color: rgb(132, 131, 131);
+  cursor: text;
+}
+
+#description-input[contentEditable="true"]:empty:before {
+  content: "Describe your video";
+  color: rgb(132, 131, 131);
+  cursor: text;
+}
+#tag-input:empty:before{
+  color: rgb(132, 131, 131);
+}
+
+
+.file-select{
+  width: 400px;
+  height: 300px;
+  border: 2px dashed rgb(107, 107, 107);
+  border-radius: 8px;
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  cursor: pointer;
+}
+.selected-file{
+  width: 350px;
+  height: 300px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items:center;
+  cursor: pointer;
 }
