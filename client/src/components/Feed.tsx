@@ -3,6 +3,7 @@ import axios, { AxiosError, isAxiosError } from 'axios';
 import React, { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { clearLocalStorageData, getLocalStorageData } from '../utils/localstorage';
+import PreviewVideo from './PreviewVideo';
 import Upload from './Upload';
 
 
@@ -31,12 +32,12 @@ const Feed = () => {
         console.log("response from server for feed-",response.data.result)
 
         setUsers(response.data.result);
-        
-
+      
       } catch (error) {
         if (isAxiosError(error)) {
           const axiosError = error as AxiosError;
 
+          console.log("not logged in")
           if (axiosError.response?.status === 403) {
             navigate("/")
           }
@@ -88,24 +89,28 @@ const Feed = () => {
   return (
     <div>
 
-      <div>
-        <form onSubmit={handleSearch}>
+    <div className="search-container">
+        <form className="search-form" onSubmit={handleSearch}>
 
-        <input type='text' placeholder='Search'></input>
-        <button> {'->'} </button>
+        <input type="text" placeholder="Search" className="search-input" />
+        <button type="submit" className="search-button">
+          {'->'}
+        </button>
         </form>
+
+        <button className="upload-button" onClick={()=>{navigate('/upload')}}>Upload</button>
       </div>
         
-        
-        <div>TEST RESULTS:users for now 
+        <h1>YOUTUBE VIDEOSS</h1>
+        <div className='feed-container'>
             {users.map((user:User)=> (
-            <div key={user.id}>{user.name} {user.email} </div>
+
+            <div key={user.id}><PreviewVideo user={user.name} title={user.email}></PreviewVideo> </div>
             ))}
         </div>
 
-        <Upload></Upload>
-
-        <button onClick={logout}>Logout</button>
+        
+        <button className="logout" onClick={logout}>Logout</button>
     </div>
   )
 }
