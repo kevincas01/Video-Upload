@@ -7,22 +7,27 @@ import PreviewVideo from './PreviewVideo';
 import Upload from './Upload';
 
 
-interface User{
-
-    id:string,
-    name:string,
-    email:string,
-    password:string
+interface VideoPreview {
+  videoid: number;
+  title: string;
+  totalLikes: number;
+  thumbnailLink: string;
+  datePosted: Date;
+  tag: string[];
+  user: { name: string };
 }
+
+
+
 const Feed = () => {
     const navigate=useNavigate()
-    const [users,setUsers]=useState([])
+    const [videos,setVideos]=useState([])
 
     const [searchInput,setSearchInput]=useState<string>("");
     const [selectedTag, setSelectedTag]=useState<string>("All");
     
     
-    const fetchUsers = async () => {
+    const fetchVideos = async () => {
     
       try {
         const local:string=await getLocalStorageData("token") as string
@@ -31,7 +36,7 @@ const Feed = () => {
         
         console.log("response from server for feed-",response.data.result)
 
-        setUsers(response.data.result);
+        setVideos(response.data.result);
       
       } catch (error) {
         if (isAxiosError(error)) {
@@ -49,7 +54,7 @@ const Feed = () => {
     };
 
     useEffect(() => {
-      fetchUsers(); // Call the async function immediately
+      fetchVideos(); // Call the async function immediately
     }, []);
 
 
@@ -103,9 +108,9 @@ const Feed = () => {
         
         <h1>YOUTUBE VIDEOSS</h1>
         <div className='feed-container'>
-            {users.map((user:User)=> (
+            {videos.map((video:VideoPreview)=> (
 
-            <div key={user.id}><PreviewVideo user={user.name} title={user.email}></PreviewVideo> </div>
+            <div key={video.videoid}><PreviewVideo user={video.user.name} title={video.title} likes={video.totalLikes} date={video.datePosted}></PreviewVideo> </div>
             ))}
         </div>
 
