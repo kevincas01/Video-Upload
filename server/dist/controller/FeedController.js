@@ -12,9 +12,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Video_1 = __importDefault(require("../utils/Video"));
 const db_1 = require("../db");
-// import { Video } from "../services/Videos";
+const dotenv_1 = __importDefault(require("dotenv"));
+const crypto_1 = __importDefault(require("crypto"));
+const client_s3_1 = require("@aws-sdk/client-s3");
+dotenv_1.default.config();
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+const awsAccessKey = process.env.AWS_ACCESS_KEY;
+const awsSecretKey = process.env.AWS_SECRET_KEY;
+// Create an S3ClientConfig object with your AWS credentials and region
+const s3ClientConfig = {
+    credentials: {
+        accessKeyId: awsAccessKey,
+        secretAccessKey: awsSecretKey
+    },
+    region: bucketRegion
+};
+// Pass the s3ClientConfig object to the S3Client constructor
+const s3 = new client_s3_1.S3Client(s3ClientConfig);
 class FeedController {
     //   title  String
     //   description String  
@@ -25,21 +41,65 @@ class FeedController {
     postVideo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { title, videoContent, description, tags } = req.body;
-                // Have to create the link so we can send it to the AWS cloudfront
-                const generatedLink = "www.test.com";
-                const currentDatetime = Video_1.default.getCurrentDatetime();
-                const userId = req.app.locals.credentials.userId;
-                const video = yield db_1.prisma.video.create({
-                    data: {
-                        title: title,
-                        description: description,
-                        link: generatedLink,
-                        datePosted: currentDatetime,
-                        tag: tags,
-                        userId: userId
-                    },
-                });
+                console.log(req.app.locals.credentials);
+                console.log(bucketName, bucketRegion, awsAccessKey, awsSecretKey);
+                console.log("checking request text-", req.body);
+                const { title, description, tags } = req.body;
+                const tagsArray = tags.split(',');
+                let generatedVideoLink = null;
+                let generatedThumbnailLink = null;
+                if (typeof req.files === 'object' && req.files !== null) {
+                    if ("video" in req.files) {
+                        const videoFile = req.files['video'][0];
+                        generatedVideoLink = crypto_1.default.randomBytes(16).toString('hex') + videoFile.originalname;
+                        const params = {
+                            Bucket: bucketName,
+                            Key: generatedVideoLink,
+                            Body: videoFile.buffer,
+                            ContentType: videoFile.mimetype
+                        };
+                        const command = new client_s3_1.PutObjectCommand(params);
+                        yield s3.send(command);
+                        console.log(videoFile);
+                    }
+                    if ("thumbnail" in req.files) {
+                        const thumbnailFile = req.files['thumbnail'][0];
+                        generatedThumbnailLink = crypto_1.default.randomBytes(16).toString('hex') + thumbnailFile.originalname;
+                        const params = {
+                            Bucket: bucketName,
+                            Key: generatedThumbnailLink,
+                            Body: thumbnailFile.buffer,
+                            ContentType: thumbnailFile.mimetype
+                        };
+                        const command = new client_s3_1.PutObjectCommand(params);
+                        yield s3.send(command);
+                    }
+                }
+                console.log(generatedThumbnailLink);
+                if (title && description && generatedVideoLink !== null && generatedThumbnailLink !== null) {
+                    const userId = req.app.locals.credentials.userId;
+                    const currentDate = new Date();
+                    console.log(title);
+                    console.log(0);
+                    console.log(description);
+                    console.log(generatedVideoLink);
+                    console.log(generatedThumbnailLink);
+                    console.log(currentDate);
+                    console.log(tagsArray);
+                    console.log(userId);
+                    const video = yield db_1.prisma.video.create({
+                        data: {
+                            title: title,
+                            totalLikes: 0,
+                            description: description,
+                            videoLink: generatedVideoLink,
+                            thumbnailLink: generatedThumbnailLink,
+                            datePosted: currentDate,
+                            tag: tagsArray,
+                            userId: userId
+                        },
+                    });
+                }
                 return res.status(200).json({
                     status: "Ok!",
                     message: "Successfully posted video!"
@@ -59,7 +119,84 @@ class FeedController {
                 console.log("getting users");
                 console.log(req.app.locals.credentials);
                 // CHANGE TO VIDEOS LATER
-                const videos = yield db_1.prisma.user.findMany();
+                const videos = yield db_1.prisma.video.findMany();
+                return res.status(200).json({
+                    status: "Ok!",
+                    message: "Successfully registered!",
+                    result: videos
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    status: "Internal server Error!",
+                    message: "Internal server Error!",
+                });
+            }
+        });
+    }
+    getVideoPreviews(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { tag } = req.body;
+            try {
+                console.log("getting users");
+                console.log(req.app.locals.credentials);
+                // CHANGE TO VIDEOS LATER
+                const videos = yield db_1.prisma.video.findMany({
+                    where: {
+                        tag: {
+                            has: tag // Check if the 'tag' array contains the specified tag
+                        }
+                    },
+                    select: {
+                        videoid: true,
+                        title: true,
+                        totalLikes: true,
+                        thumbnailLink: true,
+                        datePosted: true,
+                        tag: true,
+                        user: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                });
+                console.log(videos);
+                return res.status(200).json({
+                    status: "Ok!",
+                    message: "Successfully registered!",
+                    result: videos
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    status: "Internal server Error!",
+                    message: "Internal server Error!",
+                });
+            }
+        });
+    }
+    getVideosByTag(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log(req.app.locals.credentials);
+                // CHANGE TO VIDEOS LATER
+                const videos = yield db_1.prisma.video.findMany({
+                    select: {
+                        videoid: true,
+                        title: true,
+                        totalLikes: true,
+                        thumbnailLink: true,
+                        datePosted: true,
+                        tag: true,
+                        user: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                });
+                console.log(videos);
                 return res.status(200).json({
                     status: "Ok!",
                     message: "Successfully registered!",

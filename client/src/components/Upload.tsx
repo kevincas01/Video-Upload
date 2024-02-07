@@ -60,21 +60,33 @@ const Upload = () => {
         // Handle file upload logic (you can send the file to the server here)
         
         if (selectedFile) {
-            console.log('Uploading file:', selectedFile);
         
             try {
                 const formData = new FormData();
                 formData.append('video', selectedFile);
-                formData.append('title', title);
-                formData.append('description',description);
+                if(thumbnailFile){
 
+                  formData.append('thumbnail', thumbnailFile);
+                }
+                formData.append('title', title);
+                formData.append('description', description);
+                const tagsString = tags.join(','); // Convert the array of strings to a single comma-separated string
+                formData.append('tags', tagsString);
+
+
+            console.log(title,description,tags)
+            console.log('Form data entries:');
+          formData.forEach((value, key) => {
+              console.log(key, value);
+            });
           
                 // You can add more fields as needed
                 // formData.append('otherField', otherFieldValue);
-          
-                const response = await axios.post('http://localhost:3000/feed', formData, {
+                const local:string=await getLocalStorageData("token") as string
+                const response = await axios.post('http://localhost:3005/feed/post', formData, {
                   headers: {
                     'Content-Type': 'multipart/form-data',
+                    "jwt_token": local
                   },
                   onUploadProgress: (progressEvent) => {
                     if (progressEvent.total !== null && progressEvent.total !== undefined) {
@@ -146,7 +158,7 @@ const Upload = () => {
               </video>
               
               <div>
-                <label htmlFor="thumbnail">Selected File: Thumbnail</label>
+                <label htmlFor="thumbnail">Selected File for Thumbnail</label>
                 <input type='file' accept="image/*" name="thumbnail" onChange={handleThumbnailChange}></input>
               </div>
 
