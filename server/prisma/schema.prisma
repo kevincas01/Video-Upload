@@ -16,15 +16,30 @@ model User {
   email String  @unique
   password String
   videos Video[]
+  comments Comment[]
 }
 
 model Video {
   videoid    Int     @id @default(autoincrement())
   title  String
+  totalLikes Int
   description String  
-  link String
+  videoLink String
+  thumbnailLink String
   datePosted DateTime
   tag String[]
+  comments Comment[]
+  user    User    @relation(fields: [userId], references: [id])
+  userId  Int
+}
+
+model Comment {
+  commentId  Int     @id @default(autoincrement())
+  text String
+  totalLikes Int 
+  video Video  @relation(fields: [videoId], references: [videoid])
+  videoId  Int
+
   user    User    @relation(fields: [userId], references: [id])
   userId  Int
 }
