@@ -10,6 +10,7 @@ import {
 import Login from './components/Login';
 import Register from './components/Register';
 import Feed from './components/Feed';
+import Video from './components/Video';
 import Upload from './components/Upload';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
 
         <Route path='/' element={<Login/>} />
         <Route path='/feed' element={<Feed/>} />
+        <Route path="/feed/:videoId" element={<Video />} />
         <Route path='/upload' element={<Upload/>} />
         <Route path='/register' element={<Register/>} />
 

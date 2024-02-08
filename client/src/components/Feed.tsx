@@ -89,6 +89,14 @@ const Feed = () => {
 
 
 
+     const handleVideoPreviewClick=(videoId:number)=>{
+
+      //handle navigating to the Video component that shows everything that has to do with the videoId given
+      // feed/videoId-----sending through url the videoId
+
+      navigate(`/feed/${videoId}`);
+      console.log(videoId)
+     }
 
 
   return (
@@ -110,7 +118,7 @@ const Feed = () => {
         <div className='feed-container'>
             {videos.map((video:VideoPreview)=> (
 
-            <div key={video.videoid}><PreviewVideo user={video.user.name} title={video.title} likes={video.totalLikes} date={video.datePosted}></PreviewVideo> </div>
+            <div key={video.videoid} onClick={()=>{handleVideoPreviewClick(video.videoid)}}><PreviewVideo  videoid={video.videoid} user={video.user.name} title={video.title} likes={video.totalLikes} date={video.datePosted}></PreviewVideo> </div>
             ))}
         </div>
 

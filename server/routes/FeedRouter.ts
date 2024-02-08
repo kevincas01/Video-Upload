@@ -13,6 +13,9 @@ class FeedRoutes extends BaseRoutes {
     routes():void{
 
         this.router.get('/', auth,  FeedController.getVideoPreviews);
+       
+        this.router.get('/:videoId', auth, FeedController.getVideoInformation);
+
         this.router.get('/users', auth, FeedController.getUsers);
         this.router.post('/post', auth, upload.fields([{ name: 'video', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }]), FeedController.postVideo);
 

@@ -12,6 +12,7 @@ const upload = (0, multer_1.default)({ storage: storage });
 class FeedRoutes extends BaseRouter_1.default {
     routes() {
         this.router.get('/', authorization_1.auth, FeedController_1.default.getVideoPreviews);
+        this.router.get('/:videoId', authorization_1.auth, FeedController_1.default.getVideoInformation);
         this.router.get('/users', authorization_1.auth, FeedController_1.default.getUsers);
         this.router.post('/post', authorization_1.auth, upload.fields([{ name: 'video', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }]), FeedController_1.default.postVideo);
     }

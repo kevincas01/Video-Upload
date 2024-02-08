@@ -1,13 +1,14 @@
 import React from 'react'
 
 interface PreviewVideoProps {
+    videoid:number;
     user: string;
     title: string;
     likes:number;
     date: Date;
   }
 
-  const PreviewVideo: React.FC<PreviewVideoProps> = ({ user, title,likes,date }) => {
+  const PreviewVideo: React.FC<PreviewVideoProps> = ({ videoid,user, title,likes,date }) => {
     //   Preview of video will contain  the following order of information:
     //   Video Thumbnail
     //  Video title
@@ -49,7 +50,6 @@ interface PreviewVideoProps {
         timeLabel = "Just now";
     }
 
-    console.log(timeLabel)
     // Update the datePast state with the time label
     setDatePast(timeLabel);
     }, []);
