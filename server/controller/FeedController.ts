@@ -355,33 +355,24 @@ class FeedController{
 
     async getVideoInformation(req:Request,res:Response){
 
-        const { videoid } = req.body;
+        const videoId = req.params.videoId;
         try {
 
-            const videos = await prisma.video.findMany({
-                select: {
-                    videoid: true,
-                    title: true,
-                    totalLikes: true,
-                    thumbnailLink: true,
-                    datePosted: true,
-                    tag: true,
-                    user: {
-                        select: {
-                            name: true,
-                        },
-                    },
+            console.log("searching videos",videoId)
+
+            const video = await prisma.video.findUnique({
+                where: {
+                  videoid: parseInt(videoId), // Assuming videoid is an integer
                 },
-                orderBy: {
-                    totalLikes: 'desc',
-                },
-            });
+              });
             
+
+              // to do: handle where the videoId does not exist
 
             return res.status(200).json({
                 status: "Ok!",
-                message: "Videos retrieved successfully!",
-                result:videos
+                message: "Video retrieved successfully!",
+                result:video
             });
             
         } catch (error) {

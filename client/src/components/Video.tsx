@@ -14,12 +14,16 @@ const Video = () => {
     
       const local:string=await getLocalStorageData("token") as string
 
-      const response = await axios.get('http://localhost:3005/feed/', {headers: {"jwt_token": local }});
-      
+      console.log(videoId)
+      const response = await  axios.get(`http://localhost:3005/feed/${videoId}`, {headers: {"jwt_token": local}});
       console.log("response from server for feed-",response.data.result)
 
     
   };
+
+  useEffect(()=>{
+    fetchVideoInformation()
+  })
 
   return (
     <div>

@@ -313,30 +313,19 @@ class FeedController {
     }
     getVideoInformation(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { videoid } = req.body;
+            const videoId = req.params.videoId;
             try {
-                const videos = yield db_1.prisma.video.findMany({
-                    select: {
-                        videoid: true,
-                        title: true,
-                        totalLikes: true,
-                        thumbnailLink: true,
-                        datePosted: true,
-                        tag: true,
-                        user: {
-                            select: {
-                                name: true,
-                            },
-                        },
-                    },
-                    orderBy: {
-                        totalLikes: 'desc',
+                console.log("searching videos", videoId);
+                const video = yield db_1.prisma.video.findUnique({
+                    where: {
+                        videoid: parseInt(videoId), // Assuming videoid is an integer
                     },
                 });
+                // to do: handle where the videoId does not exist
                 return res.status(200).json({
                     status: "Ok!",
-                    message: "Videos retrieved successfully!",
-                    result: videos
+                    message: "Video retrieved successfully!",
+                    result: video
                 });
             }
             catch (error) {
