@@ -144,15 +144,11 @@ class FeedController{
     async getVideos(req:Request,res:Response){
 
         try {
-            console.log("getting users")
-            console.log(req.app.locals.credentials)
-            // CHANGE TO VIDEOS LATER
             const videos=await prisma.video.findMany();
-            
             
             return res.status(200).json({
                 status: "Ok!",
-                message: "Successfully registered!",
+                message: "Videos retrieved successfully!",
                 result:videos
             });
         } catch (error) {
@@ -163,14 +159,11 @@ class FeedController{
         }
     }
 
-    async getVideoPreviews(req:Request,res:Response){
+    async getVideosByTag(req:Request,res:Response){
 
         const { tag } = req.body;
                 
         try {
-            console.log("getting users")
-            console.log(req.app.locals.credentials)
-            // CHANGE TO VIDEOS LATER
             const videos = await prisma.video.findMany({
                 where: {
                     tag: {
@@ -197,7 +190,7 @@ class FeedController{
             
             return res.status(200).json({
                 status: "Ok!",
-                message: "Successfully registered!",
+                message: "Videos retrieved successfully!",
                 result:videos
             });
         } catch (error) {
@@ -208,8 +201,9 @@ class FeedController{
         }
     }
 
-    async getVideosByTag(req:Request,res:Response){
+    async getVideoPreviews(req:Request,res:Response){
         try {
+            console.log("206")
 
             console.log(req.app.locals.credentials)
             // CHANGE TO VIDEOS LATER
@@ -234,7 +228,7 @@ class FeedController{
             
             return res.status(200).json({
                 status: "Ok!",
-                message: "Successfully registered!",
+                message: "Videos retrieved successfully!",
                 result:videos
             });
         } catch (error) {
@@ -244,6 +238,162 @@ class FeedController{
             });
         }
     }
+
+    async getVideosSortedByMRDate(req:Request,res:Response){
+
+        try {
+
+            const videos = await prisma.video.findMany({
+                select: {
+                    videoid: true,
+                    title: true,
+                    totalLikes: true,
+                    thumbnailLink: true,
+                    datePosted: true,
+                    tag: true,
+                    user: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    datePosted: 'desc',
+                },
+            });
+            
+
+            return res.status(200).json({
+                status: "Ok!",
+                message: "Videos retrieved successfully!",
+                result:videos
+            });
+            
+        } catch (error) {
+            return res.status(500).json({
+                status: "Internal server Error!",
+                message: "Internal server Error!",
+            });
+        }
+    }
+
+    async getVideosSortedByLRDate(req:Request,res:Response){
+
+        try {
+
+            const videos = await prisma.video.findMany({
+                select: {
+                    videoid: true,
+                    title: true,
+                    totalLikes: true,
+                    thumbnailLink: true,
+                    datePosted: true,
+                    tag: true,
+                    user: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    datePosted: 'asc',
+                },
+            });
+            
+
+            return res.status(200).json({
+                status: "Ok!",
+                message: "Videos retrieved successfully!",
+                result:videos
+            });
+            
+        } catch (error) {
+            return res.status(500).json({
+                status: "Internal server Error!",
+                message: "Internal server Error!",
+            });
+        }
+    }
+
+    async getVideosSortedByPopular(req:Request,res:Response){
+
+        try {
+
+            const videos = await prisma.video.findMany({
+                select: {
+                    videoid: true,
+                    title: true,
+                    totalLikes: true,
+                    thumbnailLink: true,
+                    datePosted: true,
+                    tag: true,
+                    user: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    totalLikes: 'desc',
+                },
+            });
+            
+
+            return res.status(200).json({
+                status: "Ok!",
+                message: "Videos retrieved successfully!",
+                result:videos
+            });
+            
+        } catch (error) {
+            return res.status(500).json({
+                status: "Internal server Error!",
+                message: "Internal server Error!",
+            });
+        }
+    }
+
+    async getVideoInformation(req:Request,res:Response){
+
+        const { videoid } = req.body;
+        try {
+
+            const videos = await prisma.video.findMany({
+                select: {
+                    videoid: true,
+                    title: true,
+                    totalLikes: true,
+                    thumbnailLink: true,
+                    datePosted: true,
+                    tag: true,
+                    user: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    totalLikes: 'desc',
+                },
+            });
+            
+
+            return res.status(200).json({
+                status: "Ok!",
+                message: "Videos retrieved successfully!",
+                result:videos
+            });
+            
+        } catch (error) {
+            return res.status(500).json({
+                status: "Internal server Error!",
+                message: "Internal server Error!",
+            });
+        }
+
+
+    }
+
     async getUsers(req:Request,res:Response){
 
         try {

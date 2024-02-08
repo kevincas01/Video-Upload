@@ -116,13 +116,10 @@ class FeedController {
     getVideos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log("getting users");
-                console.log(req.app.locals.credentials);
-                // CHANGE TO VIDEOS LATER
                 const videos = yield db_1.prisma.video.findMany();
                 return res.status(200).json({
                     status: "Ok!",
-                    message: "Successfully registered!",
+                    message: "Videos retrieved successfully!",
                     result: videos
                 });
             }
@@ -134,13 +131,10 @@ class FeedController {
             }
         });
     }
-    getVideoPreviews(req, res) {
+    getVideosByTag(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { tag } = req.body;
             try {
-                console.log("getting users");
-                console.log(req.app.locals.credentials);
-                // CHANGE TO VIDEOS LATER
                 const videos = yield db_1.prisma.video.findMany({
                     where: {
                         tag: {
@@ -164,7 +158,7 @@ class FeedController {
                 console.log(videos);
                 return res.status(200).json({
                     status: "Ok!",
-                    message: "Successfully registered!",
+                    message: "Videos retrieved successfully!",
                     result: videos
                 });
             }
@@ -176,9 +170,10 @@ class FeedController {
             }
         });
     }
-    getVideosByTag(req, res) {
+    getVideoPreviews(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log("206");
                 console.log(req.app.locals.credentials);
                 // CHANGE TO VIDEOS LATER
                 const videos = yield db_1.prisma.video.findMany({
@@ -199,7 +194,148 @@ class FeedController {
                 console.log(videos);
                 return res.status(200).json({
                     status: "Ok!",
-                    message: "Successfully registered!",
+                    message: "Videos retrieved successfully!",
+                    result: videos
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    status: "Internal server Error!",
+                    message: "Internal server Error!",
+                });
+            }
+        });
+    }
+    getVideosSortedByMRDate(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const videos = yield db_1.prisma.video.findMany({
+                    select: {
+                        videoid: true,
+                        title: true,
+                        totalLikes: true,
+                        thumbnailLink: true,
+                        datePosted: true,
+                        tag: true,
+                        user: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                    orderBy: {
+                        datePosted: 'desc',
+                    },
+                });
+                return res.status(200).json({
+                    status: "Ok!",
+                    message: "Videos retrieved successfully!",
+                    result: videos
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    status: "Internal server Error!",
+                    message: "Internal server Error!",
+                });
+            }
+        });
+    }
+    getVideosSortedByLRDate(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const videos = yield db_1.prisma.video.findMany({
+                    select: {
+                        videoid: true,
+                        title: true,
+                        totalLikes: true,
+                        thumbnailLink: true,
+                        datePosted: true,
+                        tag: true,
+                        user: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                    orderBy: {
+                        datePosted: 'asc',
+                    },
+                });
+                return res.status(200).json({
+                    status: "Ok!",
+                    message: "Videos retrieved successfully!",
+                    result: videos
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    status: "Internal server Error!",
+                    message: "Internal server Error!",
+                });
+            }
+        });
+    }
+    getVideosSortedByPopular(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const videos = yield db_1.prisma.video.findMany({
+                    select: {
+                        videoid: true,
+                        title: true,
+                        totalLikes: true,
+                        thumbnailLink: true,
+                        datePosted: true,
+                        tag: true,
+                        user: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                    orderBy: {
+                        totalLikes: 'desc',
+                    },
+                });
+                return res.status(200).json({
+                    status: "Ok!",
+                    message: "Videos retrieved successfully!",
+                    result: videos
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    status: "Internal server Error!",
+                    message: "Internal server Error!",
+                });
+            }
+        });
+    }
+    getVideoInformation(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { videoid } = req.body;
+            try {
+                const videos = yield db_1.prisma.video.findMany({
+                    select: {
+                        videoid: true,
+                        title: true,
+                        totalLikes: true,
+                        thumbnailLink: true,
+                        datePosted: true,
+                        tag: true,
+                        user: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                    orderBy: {
+                        totalLikes: 'desc',
+                    },
+                });
+                return res.status(200).json({
+                    status: "Ok!",
+                    message: "Videos retrieved successfully!",
                     result: videos
                 });
             }
