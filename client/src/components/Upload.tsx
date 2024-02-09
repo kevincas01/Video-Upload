@@ -142,32 +142,22 @@ const Upload = () => {
                 <p>Drag 'n' drop some files here, or click to select files</p>
             }
           </div>
-          
-        
-
-
-        </div>
-        
 
           {selectedFile && (
             <div className="selected-file">
               <h2>{selectedFile.name}</h2>
-              <video width="320" height="240" controls>
+              <video controls>
                 <source src={URL.createObjectURL(selectedFile)} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               
-              <div>
-                <label htmlFor="thumbnail">Selected File for Thumbnail</label>
-                <input type='file' accept="image/*" name="thumbnail" onChange={handleThumbnailChange}></input>
-              </div>
-
-              {thumbnailFile && (
-                <img src={URL.createObjectURL(thumbnailFile)} alt="Thumbnail" width="320" height="240" />
-                )}
+              
             </div>
 
       )}
+        
+        </div>
+        
       </div>
       
 
@@ -203,10 +193,23 @@ const Upload = () => {
         </div>
       </div>
 
+      <div className='thumbnail-container'>
+
+      
+                <label htmlFor="thumbnail">Select File for Thumbnail</label>
+                <input type='file' accept="image/*" name="thumbnail" onChange={handleThumbnailChange}></input>
+              
+
+              {thumbnailFile && (
+                <img className=" thumbnail" src={URL.createObjectURL(thumbnailFile)} alt="Thumbnail"/>
+                )}
+      </div>
       <div className="tags-container">
           <div className="label">
               Tags
           </div>
+
+
 
 {/* TODO:FIX THE DIFFERENCE IN FONT OF THE TAGS FROM THE OTHER INPUTS */}
         <div className="tags">

@@ -27,7 +27,7 @@ const TagInput: React.FC<TagInputProps> = ({onTagsChange}) => {
   };
 
   return (
-    <div >
+    <>
       <form onSubmit={handleAddTag}>
         <input
           id="tag-input"
@@ -48,7 +48,7 @@ const TagInput: React.FC<TagInputProps> = ({onTagsChange}) => {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 
