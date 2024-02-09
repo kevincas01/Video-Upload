@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import localforage from 'localforage';
 
 export const  setLocalStorageData = async (key: string, value: string) => {
