@@ -368,13 +368,31 @@ class FeedController{
 
             const video = await prisma.video.findUnique({
                 where: {
-                  videoid: parseInt(videoId), // Assuming videoid is an integer
+                  videoid: parseInt(videoId),
+                },
+                include: {
+                  user: {
+                    select: {
+                      name: true,
+                    },
+                  },
                 },
               });
             
+            
+            if(!video){
+                return res.status(200).json({
+                    status: "Ok!",
+                    message: "No such video exists",
+                    result:null
+                });
 
+            }
               // to do: handle where the videoId does not exist
 
+            video.videoLink="https://d3f4vrh8x97mrt.cloudfront.net/"+video.videoLink
+
+            console.log(video)
             return res.status(200).json({
                 status: "Ok!",
                 message: "Video retrieved successfully!",
