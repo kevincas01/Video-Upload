@@ -13,6 +13,8 @@ import Feed from './components/Feed';
 import Video from './components/Video';
 import Upload from './components/Upload';
 
+import SearchContainer from './components/SearchContainer';
+
 function App() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -23,17 +25,21 @@ function App() {
   return (
     <Router>
 
-    <div>
       <Routes>
 
         <Route path='/' element={<Login/>} />
-        <Route path='/feed' element={<Feed/>} />
-        <Route path="/feed/:videoId" element={<Video />} />
-        <Route path='/upload' element={<Upload/>} />
         <Route path='/register' element={<Register/>} />
+        <Route path='/upload' element={<Upload/>} />
+        <Route path="/feed" element={<>
+          <SearchContainer />
+          <Feed />
+        </>} />
+        <Route path="/feed/:videoId" element={<>
+          <SearchContainer />
+          <Video />
+        </>} />
 
       </Routes>
-      </div>
     </Router>
   );
 }

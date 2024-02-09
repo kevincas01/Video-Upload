@@ -23,7 +23,6 @@ const Feed = () => {
     const navigate=useNavigate()
     const [videos,setVideos]=useState([])
 
-    const [searchInput,setSearchInput]=useState<string>("");
     const [selectedTag, setSelectedTag]=useState<string>("All");
     
     
@@ -64,16 +63,7 @@ const Feed = () => {
 
     }
 
-    const handleSearch = ()=>{
-      if(!searchInput){
-        return
-      }
-
-      //Otherwise fetch the videos with the search bar
-      //route you to the appropriate page via url that has the search query of the search input 
-
-      console.log("searching")
-    }
+    
      //pagination idea request
      // when the user scrolls past the next the last video that is 
      //in view we send a request to get the next page of 10videos (can be any number of videos)
@@ -102,17 +92,7 @@ const Feed = () => {
   return (
     <div>
 
-    <div className="search-container">
-        <form className="search-form" onSubmit={handleSearch}>
-
-        <input type="text" placeholder="Search" className="search-input" />
-        <button type="submit" className="search-button">
-          {'->'}
-        </button>
-        </form>
-
-        <button className="upload-button" onClick={()=>{navigate('/upload')}}>Upload</button>
-      </div>
+    
         
         <h1>YOUTUBE VIDEOSS</h1>
         <div className='feed-container'>
