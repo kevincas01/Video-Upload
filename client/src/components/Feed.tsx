@@ -118,7 +118,9 @@ const Feed = () => {
         <div className='feed-container'>
             {videos.map((video:VideoPreview)=> (
 
-            <div key={video.videoid} onClick={()=>{handleVideoPreviewClick(video.videoid)}}><PreviewVideo  videoid={video.videoid} user={video.user.name} title={video.title} likes={video.totalLikes} date={video.datePosted}></PreviewVideo> </div>
+            <div key={video.videoid} onClick={()=>{handleVideoPreviewClick(video.videoid)}}>
+              
+              <PreviewVideo  videoid={video.videoid} thumbnailSrc={video.thumbnailLink} user={video.user.name} title={video.title} likes={video.totalLikes} date={video.datePosted}></PreviewVideo> </div>
             ))}
         </div>
 

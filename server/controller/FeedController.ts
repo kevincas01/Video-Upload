@@ -222,6 +222,12 @@ class FeedController{
                     },
                     },
               });
+
+
+            for (let video of videos){
+
+                video.thumbnailLink="https://d3f4vrh8x97mrt.cloudfront.net/"+video.thumbnailLink
+            }
             
               console.log(videos)
             
