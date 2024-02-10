@@ -7,6 +7,8 @@ import PreviewVideo from './PreviewVideo';
 import Upload from './Upload';
 
 
+import useSWR from 'swr'; // Import useSWR from SWR library
+
 interface VideoPreview {
   videoid: number;
   title: string;
@@ -18,44 +20,48 @@ interface VideoPreview {
 }
 
 
-
 const Feed = () => {
     const navigate=useNavigate()
-    const [videos,setVideos]=useState([])
-
-    const [selectedTag, setSelectedTag]=useState<string>("All");
-    
-    
-    const fetchVideos = async () => {
-    
+    // Define fetcher function to fetch videos
+    const fetcher = async (url: string) => {
       try {
-        const local:string=await getLocalStorageData("token") as string
-
-        const response = await axios.get('http://localhost:3005/feed', {headers: {"jwt_token": local }});
-        
-        console.log("response from server for feed-",response.data.result)
-
-        setVideos(response.data.result);
-      
+        const token = await getLocalStorageData('token') as string;
+        const response = await axios.get(url, { headers: { 'jwt_token': token } });
+        console.log(response);
+        return response.data.result;
       } catch (error) {
-        if (isAxiosError(error)) {
-          const axiosError = error as AxiosError;
-
-          console.log("not logged in")
-          if (axiosError.response?.status === 403) {
-            navigate("/")
-          }
-          
-        } else {
-          console.log('Unexpected error', error);
-        }
+        console.error('Error fetching data:', error);
+        throw error;
       }
     };
+    
 
-    useEffect(() => {
-      fetchVideos(); // Call the async function immediately
-    }, []);
+    // Use useSWR to fetch videos
+    const { data:videos,mutate, error } = useSWR('http://localhost:3005/feed', fetcher, {
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false
+    }
+  );
 
+  React.useEffect(() => {
+    if (!videos) mutate()
+  }, [videos, mutate]);
+
+    if (error) {
+      if (isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+
+        console.log("not logged in")
+        if (axiosError.response?.status === 403) {
+          navigate("/")
+        }
+        
+      } else {
+        console.log('Unexpected error', error);
+      }
+      return <div>Error fetching videos</div>;}
+    if (!videos) return <div>Loading...</div>;
 
     const logout=()=>{
       clearLocalStorageData()
@@ -86,7 +92,7 @@ const Feed = () => {
 
       navigate(`/feed/${videoId}`);
       console.log(videoId)
-     }
+    }
 
 
   return (

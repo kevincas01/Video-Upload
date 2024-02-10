@@ -173,8 +173,6 @@ class FeedController {
     getVideoPreviews(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log("206");
-                console.log(req.app.locals.credentials);
                 // CHANGE TO VIDEOS LATER
                 const videos = yield db_1.prisma.video.findMany({
                     select: {
@@ -194,7 +192,7 @@ class FeedController {
                 for (let video of videos) {
                     video.thumbnailLink = "https://d3f4vrh8x97mrt.cloudfront.net/" + video.thumbnailLink;
                 }
-                console.log(videos);
+                
                 return res.status(200).json({
                     status: "Ok!",
                     message: "Videos retrieved successfully!",

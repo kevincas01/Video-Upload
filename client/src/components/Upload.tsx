@@ -4,8 +4,11 @@ import { getLocalStorageData } from '../utils/localstorage';
 import TagInput from './TagInput';
 
 import {useDropzone} from 'react-dropzone'
+import { useNavigate } from 'react-router-dom';
 
 const Upload = () => {
+
+    const navigate=useNavigate()
     const [title,setTitle]=useState<string>("");
     const [titleCount, setTitleCount]=useState<number>(0);
     const [description,setDescription]=useState<string>("");
@@ -72,13 +75,6 @@ const Upload = () => {
                 formData.append('description', description);
                 const tagsString = tags.join(','); // Convert the array of strings to a single comma-separated string
                 formData.append('tags', tagsString);
-
-
-            console.log(title,description,tags)
-            console.log('Form data entries:');
-          formData.forEach((value, key) => {
-              console.log(key, value);
-            });
           
                 // You can add more fields as needed
                 // formData.append('otherField', otherFieldValue);
@@ -96,6 +92,7 @@ const Upload = () => {
                       }
                   },
                 });
+                navigate("/")
           
                 console.log('Server response:', response.data);
               } catch (error) {

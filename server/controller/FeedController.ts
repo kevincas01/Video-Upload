@@ -39,6 +39,7 @@ class FeedController{
     //   tag String[]
     //   user
 
+
     
     async postVideo(req:Request,res:Response){
 
@@ -187,7 +188,6 @@ class FeedController{
             
             console.log(videos)
             
-            
             return res.status(200).json({
                 status: "Ok!",
                 message: "Videos retrieved successfully!",
@@ -203,9 +203,7 @@ class FeedController{
 
     async getVideoPreviews(req:Request,res:Response){
         try {
-            console.log("206")
-
-            console.log(req.app.locals.credentials)
+            
             // CHANGE TO VIDEOS LATER
             const videos = await prisma.video.findMany({
                 select: {
@@ -229,8 +227,9 @@ class FeedController{
                 video.thumbnailLink="https://d3f4vrh8x97mrt.cloudfront.net/"+video.thumbnailLink
             }
             
-              console.log(videos)
+              console.log("we got the videos again")
             
+
             
             return res.status(200).json({
                 status: "Ok!",
