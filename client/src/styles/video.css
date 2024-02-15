@@ -1,6 +1,8 @@
-
+.video-information-container{
+    margin-left: 50px;
+}
 .video-container {
-    margin: 50px;
+    margin-top: 50px;
 }
 .video-container video{
 
@@ -39,3 +41,4 @@
     padding: 10px;
     margin-top: 10px;
 }
+
