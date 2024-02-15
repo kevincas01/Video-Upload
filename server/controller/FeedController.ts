@@ -200,11 +200,12 @@ class FeedController{
             });
         }
     }
+    
 
     async getVideoPreviews(req:Request,res:Response){
         try {
             
-            // CHANGE TO VIDEOS LATER
+            
             const videos = await prisma.video.findMany({
                 select: {
                     videoid:true,
@@ -215,21 +216,16 @@ class FeedController{
                     tag: true,
                     user: {
                         select: {
-                        name: true,
+                            name: true,
                         },
                     },
-                    },
-              });
-
-
+                },
+            });
+            
             for (let video of videos){
-
+                
                 video.thumbnailLink="https://d3f4vrh8x97mrt.cloudfront.net/"+video.thumbnailLink
             }
-            
-              console.log("we got the videos again")
-            
-
             
             return res.status(200).json({
                 status: "Ok!",
