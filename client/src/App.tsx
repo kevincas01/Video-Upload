@@ -7,11 +7,11 @@ import {
   Route,
 } from "react-router-dom";
 
-import Login from './components/Login';
-import Register from './components/Register';
-import Feed from './components/Feed';
-import Video from './components/Video';
-import Upload from './components/Upload';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Feed from './pages/Feed';
+import Video from './pages/Video';
+import Upload from './pages/Upload';
 
 import SearchContainer from './components/SearchContainer';
 

@@ -10,30 +10,17 @@ import { getTimeDifference } from '../utils/date';
 
 
 import useSWR from 'swr'; // Import useSWR from SWR library
+import { useVideoInformation } from '../services/queries';
+import Comments from '../components/Comments';
 
 const Video = () => {
     const navigate=useNavigate()
   // Get the videoId parameter from the URL
   const { videoId } = useParams();
   
-  const fetcher = async (url: string) => {
-    try {
-      const token = await getLocalStorageData('token') as string;
-      const response = await axios.get(url, { headers: { 'jwt_token': token } });
-      console.log(response);
-      return response.data.result;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      throw error;
-    }
-  };
   
-  
-  const { data:videoInformation, error } = useSWR('http://localhost:3005/feed/'+videoId, fetcher, {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false
-    })
+  const newvideoId=Number(videoId)
+  const {data:videoInformation,mutate,error}=useVideoInformation(newvideoId)
 
     if (error) {
         if (isAxiosError(error)) {
@@ -64,7 +51,7 @@ const Video = () => {
         <div className='video-container'>
             
             <video autoPlay controls>
-                <source src={videoInformation["videoLink"]} type="video/mp4" />
+                <source src={videoInformation.videoLink} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             
@@ -77,7 +64,7 @@ const Video = () => {
                 
                     <div className='user-text-info'>
 
-                  <h3>{videoInformation["user"]["name"]}</h3>  
+                  <h3>{videoInformation.user.name}</h3>  
                   <p>02</p>
                     </div>
 
@@ -96,7 +83,16 @@ const Video = () => {
             
         </div>
 
+
+
+        <div className='video-comments'>
+          <Comments videoId={newvideoId}/>
+
         </div>
+
+        </div>
+
+        
         <div className='other-videos-previews'>
 
 

@@ -3,11 +3,12 @@ import axios, { AxiosError, isAxiosError } from 'axios';
 import React, { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { clearLocalStorageData, getLocalStorageData } from '../utils/localstorage';
-import PreviewVideo from './PreviewVideo';
+import PreviewVideo from '../components/PreviewVideo';
 import Upload from './Upload';
 
 
 import useSWR from 'swr'; // Import useSWR from SWR library
+import { useVideoPreviews } from '../services/queries';
 
 interface VideoPreview {
   videoid: number;
@@ -23,53 +24,61 @@ interface VideoPreview {
 const Feed = () => {
     const navigate=useNavigate()
     // Define fetcher function to fetch videos
-    const fetcher = async (url: string) => {
-      try {
-        const token = await getLocalStorageData('token') as string;
-        const response = await axios.get(url, { headers: { 'jwt_token': token } });
-        console.log(response);
-        return response.data.result;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        throw error;
-      }
-    };
+
+
+  //   const fetcher = async (url: string) => {
+  //     try {
+  //       const token = await getLocalStorageData('token') as string;
+  //       const response = await axios.get(url, { headers: { 'jwt_token': token } });
+  //       console.log(response);
+  //       return response.data.result;
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //       throw error;
+  //     }
+  //   };
     
 
-    // Use useSWR to fetch videos
-    const { data:videos,mutate, error } = useSWR('http://localhost:3005/feed', fetcher, {
-      revalidateOnFocus: false,
-      revalidateOnMount: false,
-      revalidateOnReconnect: false
-    }
-  );
+  //   // Use useSWR to fetch videos
+  //   const { data:videos,mutate, error } = useSWR('http://localhost:3005/feed', fetcher, {
+  //     revalidateOnFocus: false,
+  //     revalidateOnMount: false,
+  //     revalidateOnReconnect: false
+  //   }
+  // );
 
+  
+  
+  
+  const {data:videos,mutate,error}=useVideoPreviews()
+  
+  
   React.useEffect(() => {
     if (!videos) mutate()
   }, [videos, mutate]);
-
+  
     if (error) {
-      if (isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-
-        console.log("not logged in")
-        if (axiosError.response?.status === 403) {
-          navigate("/")
-        }
+        if (isAxiosError(error)) {
+            const axiosError = error as AxiosError;
+      
+            console.log("not logged in")
+            if (axiosError.response?.status === 403) {
+                navigate("/")
+              }
         
-      } else {
-        console.log('Unexpected error', error);
-      }
-      return <div>Error fetching videos</div>;}
-    if (!videos) return <div>Loading...</div>;
+            } else {
+                console.log('Unexpected error', error);
+              }
+              return <div>Error fetching videos</div>;}
+            if (!videos) return <div>Loading...</div>;
 
-    const logout=()=>{
-      clearLocalStorageData()
-      navigate('/')
-
-    }
-
-    
+          const logout=()=>{
+            clearLocalStorageData()
+            navigate('/')
+            
+          }
+          
+          
      //pagination idea request
      // when the user scrolls past the next the last video that is 
      //in view we send a request to get the next page of 10videos (can be any number of videos)
@@ -102,7 +111,7 @@ const Feed = () => {
         
         <h1>YOUTUBE VIDEOSS</h1>
         <div className='feed-container'>
-            {videos.map((video:VideoPreview)=> (
+            {videos?.map((video:VideoPreview)=> (
 
             <div key={video.videoid} onClick={()=>{handleVideoPreviewClick(video.videoid)}}>
               

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState , ChangeEvent, DragEvent,useCallback } from 'react'
 import { getLocalStorageData } from '../utils/localstorage';
-import TagInput from './TagInput';
+import TagInput from '../components/TagInput';
 
 import {useDropzone} from 'react-dropzone'
 import { useNavigate } from 'react-router-dom';
