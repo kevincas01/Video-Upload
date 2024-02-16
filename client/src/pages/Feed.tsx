@@ -23,39 +23,13 @@ interface VideoPreview {
 
 const Feed = () => {
     const navigate=useNavigate()
-    // Define fetcher function to fetch videos
-
-
-  //   const fetcher = async (url: string) => {
-  //     try {
-  //       const token = await getLocalStorageData('token') as string;
-  //       const response = await axios.get(url, { headers: { 'jwt_token': token } });
-  //       console.log(response);
-  //       return response.data.result;
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //       throw error;
-  //     }
-  //   };
     
-
-  //   // Use useSWR to fetch videos
-  //   const { data:videos,mutate, error } = useSWR('http://localhost:3005/feed', fetcher, {
-  //     revalidateOnFocus: false,
-  //     revalidateOnMount: false,
-  //     revalidateOnReconnect: false
-  //   }
-  // );
-
-  
-  
-  
-  const {data:videos,mutate,error}=useVideoPreviews()
+  const {data:results, mutate, isLoading,error,setSize,size}=useVideoPreviews()
   
   
   React.useEffect(() => {
-    if (!videos) mutate()
-  }, [videos, mutate]);
+    if (!results) mutate()
+  }, [results, mutate]);
   
     if (error) {
         if (isAxiosError(error)) {
@@ -69,14 +43,14 @@ const Feed = () => {
             } else {
                 console.log('Unexpected error', error);
               }
-              return <div>Error fetching videos</div>;}
-            if (!videos) return <div>Loading...</div>;
+      return <div>Error fetching videos</div>;}
+    // if (!results) return <div>Loading...</div>;
 
-          const logout=()=>{
-            clearLocalStorageData()
-            navigate('/')
-            
-          }
+    const logout=()=>{
+      clearLocalStorageData()
+      navigate('/')
+      
+    }
           
           
      //pagination idea request
@@ -103,20 +77,42 @@ const Feed = () => {
       console.log(videoId)
     }
 
-
   return (
     <div>
 
-    
         
         <h1>YOUTUBE VIDEOSS</h1>
         <div className='feed-container'>
-            {videos?.map((video:VideoPreview)=> (
 
-            <div key={video.videoid} onClick={()=>{handleVideoPreviewClick(video.videoid)}}>
-              
-              <PreviewVideo  videoid={video.videoid} thumbnailSrc={video.thumbnailLink} user={video.user.name} title={video.title} likes={video.totalLikes} date={video.datePosted}></PreviewVideo> </div>
-            ))}
+        {isLoading?(
+        <>Loading...</>
+        ):(
+          <>
+          {results ? (
+              results.map((videos, index) => (
+                  <>
+                      {videos.map((video: VideoPreview) => (
+                          <div key={video.videoid} className='video-preview'onClick={() => { handleVideoPreviewClick(video.videoid) }}>
+                              <PreviewVideo
+                                  videoid={video.videoid}
+                                  thumbnailSrc={video.thumbnailLink}
+                                  user={video.user.name}
+                                  title={video.title}
+                                  likes={video.totalLikes}
+                                  date={video.datePosted}
+                              />
+                          </div>
+                      ))}
+                  </>
+              ))
+          ) : (
+              <div>No results found.</div>
+          )}
+          <button onClick={()=>{setSize(size+1)}}>Load more videos</button>
+      </>
+      
+        )}
+        
         </div>
 
         

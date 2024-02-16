@@ -102,16 +102,6 @@ class FeedController{
                 const userId=req.app.locals.credentials.userId 
                 const currentDate = new Date();
 
-                console.log(title)
-                console.log(0)
-                console.log(description)
-                console.log(generatedVideoLink)
-                console.log(generatedThumbnailLink)
-                console.log(currentDate)
-                console.log(tagsArray)
-                console.log(userId)
-
-
                      const video=await prisma.video.create({
                         data: {
                                 
@@ -204,11 +194,17 @@ class FeedController{
 
     async getVideoPreviews(req:Request,res:Response){
         try {
-            
-            
+            const { page, limit } = req.query;
+            const parsedPage = Number(page) ; // Default to page 1 if not provided or invalid
+            const parsedLimit = Number(limit); // Default to limit of 10 if not provided or invalid
+
+            const skip = (parsedPage ) * parsedLimit; // Calculate skip value
+            const take = parsedLimit; // Set take value equal to limit
+
+            console.log(skip,take)
             const videos = await prisma.video.findMany({
                 select: {
-                    videoid:true,
+                    videoid: true,
                     title: true,
                     totalLikes: true,
                     thumbnailLink: true,
@@ -220,17 +216,25 @@ class FeedController{
                         },
                     },
                 },
+                skip: skip, // Skip records based on page
+                take: take, // Take records based on limit
             });
+
             
             for (let video of videos){
                 
                 video.thumbnailLink="https://d3f4vrh8x97mrt.cloudfront.net/"+video.thumbnailLink
+            
             }
+
+            const totalCount = await prisma.video.count();
+            const hasMoreData = totalCount > skip*take + videos.length;
             
             return res.status(200).json({
                 status: "Ok!",
                 message: "Videos retrieved successfully!",
-                result:videos
+                result:videos,
+                moreDataFlag:hasMoreData
             });
         } catch (error) {
             return res.status(500).json({

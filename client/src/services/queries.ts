@@ -1,18 +1,24 @@
 
-import useSWR from 'swr'; // Import useSWR from SWR library
+import useSWR  from 'swr'; // Import useSWR from SWR 
+import useSWRInfinite from 'swr/infinite'
+
 import { VideoComments } from '../types/comment';
 import { VideoInformation } from '../types/video';
 import { VideoPreviewInformation } from "../types/videoPreview";
 import fetcher from './fetcher';
 
 
-
 export function useVideoPreviews(){
+    const getKey=(pageIndex:number,previousPageData:VideoPreviewInformation[])=>{
 
-    return useSWR<VideoPreviewInformation[]>("/feed", fetcher
-        );
+        if(previousPageData && !previousPageData.length) return null
+        return `/feed?page=${pageIndex}&limit=1` 
+    }
 
+    return useSWRInfinite<VideoPreviewInformation[]>(getKey,fetcher)
 }
+
+
 
 export function useVideoInformation(id:number){
 

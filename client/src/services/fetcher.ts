@@ -18,3 +18,16 @@ const fetcher = async (url: string) => {
   };
 
 export default fetcher;
+
+
+// export const fetcherFlag = async (url: string) => {
+//   try {
+//     const token = await getLocalStorageData('token') as string;
+//     const response = await axiosInstance.get(url, { headers: { 'jwt_token': token } });
+//     console.log(response)
+//     return {results:response.data.result,moreDataFlag:response.data.moreDataFlag};
+//   } catch (error) {
+//     console.error('Error fetching data:', error);
+//     throw error;
+//   }
+// };

@@ -53,6 +53,10 @@ class VideoController {
                             },
                         },
                     }
+                    // ,
+                    //     orderBy: {
+                    //         createdAt: 'desc' // Assuming createdAt is the field representing the timestamp when the comment was created
+                    //     }
                 });
                 return res.status(200).json({
                     status: "Ok!",
