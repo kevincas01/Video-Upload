@@ -8,7 +8,7 @@ export default function Providers({children}:{children:ReactNode}){
     return (
         <SWRConfig value={{
              revalidateOnFocus: false, 
-            // revalidateOnMount: false, 
+             revalidateOnMount: false, 
              revalidateOnReconnect: false,
 
             }}

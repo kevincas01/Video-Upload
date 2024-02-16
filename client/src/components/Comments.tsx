@@ -11,6 +11,10 @@ const Comments = ({videoId}:{videoId:number}) => {
     const [commentText,setCommentText]=React.useState<string>("")
 
     const {data:comments,isLoading,mutate,error}=useVideoComments(videoId)
+    
+    React.useEffect(() => {
+        if (!comments) mutate()
+      }, [comments, mutate]);
     const {trigger}=useCreateComment(videoId)
 
     if (error) {
@@ -26,7 +30,7 @@ const Comments = ({videoId}:{videoId:number}) => {
           console.log('Unexpected error', error);
         }
         return <div>Error fetching video information</div>;}
-    console.log(comments)
+    
 
     const cancelComment = (e: FormEvent<HTMLButtonElement>): void => {
         e.preventDefault();
@@ -50,7 +54,6 @@ const Comments = ({videoId}:{videoId:number}) => {
                 <button id='comment-button' type="submit">Comment</button>
             </div>
         </form>
-        {commentText}
 
         {isLoading?(
         <div>Loading...</div>

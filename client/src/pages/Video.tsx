@@ -22,6 +22,10 @@ const Video = () => {
   const newvideoId=Number(videoId)
   const {data:videoInformation,mutate,error}=useVideoInformation(newvideoId)
 
+  React.useEffect(() => {
+    if (!videoInformation) mutate()
+  }, [videoInformation, mutate]);
+
     if (error) {
         if (isAxiosError(error)) {
           const axiosError = error as AxiosError;
@@ -38,6 +42,8 @@ const Video = () => {
     if (!videoInformation) return <div>Loading...</div>;
     
 
+    
+    
   return (
     <div className="video-page" >
       {/* Video content */}
