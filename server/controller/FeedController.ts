@@ -46,11 +46,6 @@ class FeedController{
         try {
 
 
-            console.log(req.app.locals.credentials)
-
-
-            console.log(bucketName,bucketRegion,awsAccessKey,awsSecretKey)
-            console.log("checking request text-", req.body)
 
             const {title,description,tags}=req.body
             const tagsArray=tags.split(',')
@@ -201,7 +196,6 @@ class FeedController{
             const skip = (parsedPage ) * parsedLimit; // Calculate skip value
             const take = parsedLimit; // Set take value equal to limit
 
-            console.log(skip,take)
             const videos = await prisma.video.findMany({
                 select: {
                     videoid: true,
@@ -363,8 +357,6 @@ class FeedController{
         const videoId = req.params.videoId;
         try {
 
-            console.log("searching videos",videoId)
-
             const video = await prisma.video.findUnique({
                 where: {
                   videoid: parseInt(videoId),
@@ -373,6 +365,7 @@ class FeedController{
                   user: {
                     select: {
                       name: true,
+                      id:true,
                     },
                   },
                 },
@@ -391,11 +384,15 @@ class FeedController{
 
             video.videoLink="https://d3f4vrh8x97mrt.cloudfront.net/"+video.videoLink
 
-            console.log(video)
+
+
+            const returnData=video
+            returnData.myUserId=req.app.locals.credentials.userId;
+            console.log(req.app.locals.credentials);
             return res.status(200).json({
                 status: "Ok!",
                 message: "Video retrieved successfully!",
-                result:video
+                result:returnData
             });
             
         } catch (error) {

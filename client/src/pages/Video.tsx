@@ -18,7 +18,6 @@ const Video = () => {
   // Get the videoId parameter from the URL
   const { videoId } = useParams();
   
-  
   const newvideoId=Number(videoId)
   const {data:videoInformation,mutate,error}=useVideoInformation(newvideoId)
 
@@ -42,72 +41,63 @@ const Video = () => {
     if (!videoInformation) return <div>Loading...</div>;
     
 
+    console.log(videoInformation["user"].id, videoInformation["myUserId"]);
     
     
   return (
-    <div className="video-page" >
+    <div className="video-page">
       {/* Video content */}
 
-      {videoInformation===null?(
-      <div>No such video exists</div>
-      ):(
+      {videoInformation === null ? (
+        <div>No such video exists</div>
+      ) : (
         <>
-        <div className="video-information-container">
-            
-        <div className='video-container'>
-            
-            <video autoPlay controls>
+          <div className="video-information-container">
+            <div className="video-container">
+              <video autoPlay controls>
                 <source src={videoInformation.videoLink} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-            
-            <h2>{videoInformation["title"]}</h2>
 
-            <div className='user-info'>
-                <div className='user-info-picture'>
-                    <img id='details-userPic' src='/images/test.jpeg' alt='Video thumbnail' height="50px" ></img>
+              <h2>
+                {videoInformation["title"]}{" "}
+                <span>
+                  {videoInformation["myUserId"] ===
+                    videoInformation["user"].id && <button>Edit</button>}
+                </span>
+              </h2>
+
+              <div className="user-info">
+                <div className="user-info-picture">
+                  <img
+                    id="details-userPic"
+                    src="/images/test.jpeg"
+                    alt="Video thumbnail"
+                    height="50px"
+                  ></img>
                 </div>
-                
-                    <div className='user-text-info'>
 
-                  <h3>{videoInformation.user.name}</h3>  
+                <div className="user-text-info">
+                  <h3>{videoInformation.user.name}</h3>
                   <p>02</p>
-                    </div>
-
-
-               
-                
-            </div>
-            <div className='video-information'>
-                <h4>11 views {getTimeDifference(videoInformation["datePosted"])}
+                </div>
+              </div>
+              <div className="video-information">
+                <h4>
+                  11 views {getTimeDifference(videoInformation["datePosted"])}
                 </h4>
-                <p>
-                    {videoInformation["description"]}
-                </p>
-
+                <p>{videoInformation["description"]}</p>
+              </div>
             </div>
-            
-        </div>
 
+            <div className="video-comments">
+              <Comments videoId={newvideoId} />
+            </div>
+          </div>
 
-
-        <div className='video-comments'>
-          <Comments videoId={newvideoId}/>
-
-        </div>
-
-        </div>
-
-        
-        <div className='other-videos-previews'>
-
-
-        </div>
-</>
+          <div className="other-videos-previews"></div>
+        </>
       )}
-
-      
-
     </div>
   );
 };
