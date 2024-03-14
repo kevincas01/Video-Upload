@@ -10,6 +10,8 @@ import Upload from './Upload';
 import useSWR from 'swr'; // Import useSWR from SWR library
 import { useVideoPreviews } from '../services/queries';
 
+import "../styles/feed.css";
+
 interface VideoPreview {
   videoid: number;
   title: string;

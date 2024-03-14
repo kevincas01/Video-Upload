@@ -4,6 +4,8 @@ import axios, { AxiosError, isAxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom'; 
 import { getLocalStorageData, setLocalStorageData } from '../utils/localstorage';
 
+import '../styles/login.css'
+
 const Login = () => {
   const navigate = useNavigate();
 
@@ -46,52 +48,57 @@ const Login = () => {
     };
 
   return (
-    <div className='login-container'>
-        
-        <h1>Login</h1>
-            <div className='login-form'>
+    <div className="login-container">
+      <h1>Login</h1>
+      <div className="login-form">
+        {/* <form action="{{url_for('login_page')}}" method="GET"> */}
+        <div className="input-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Email"
+            name="email"
+            required
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            className="form-control"
+            placeholder="Password"
+            name="password"
+            required
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        </div>
 
-            {/* <form action="{{url_for('login_page')}}" method="GET"> */}
-                <label htmlFor="email">Email</label>
-                <div className="input-group mb-3">
-                    <input type="text" className="form-control" placeholder="Email" name="email" required
-                    onChange={(e)=>{
-                      setEmail(e.target.value)
-                    }}/>
-                </div>
-                <label htmlFor="password">Password</label>
-                <div  className="input-group mb-3">
-                    <input type="password" className="form-control" placeholder="Password" name="password" required
-                    onChange={(e)=>{
-                      setPassword(e.target.value)
-                    }}/>
+        <button className="login-button" onClick={handleLogin}>
+          Login{" "}
+        </button>
+        {/* </form> */}
 
-                  </div>
+        {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
 
-                    <button onClick={handleLogin}>Login </button>
-                {/* </form> */}
+        <span>Or</span>
+        <div>
+          <button> Google</button>
+        </div>
 
-                {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
-                
-              </div>
-
-
-                <div>Or</div>
-                    <div>
-                        <button> Google</button>
-                    </div>
-    
-    
-            <div>
-                <span>Don't have an account? <Link to={"/register"}>
-                    Register
-                </Link>
-              </span>
-                
-              
-            </div>
+        <div>
+          <span>
+            Don't have an account? <Link to={"/register"}>Register</Link>
+          </span>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
 export default Login
