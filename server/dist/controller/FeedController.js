@@ -41,9 +41,6 @@ class FeedController {
     postVideo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(req.app.locals.credentials);
-                console.log(bucketName, bucketRegion, awsAccessKey, awsSecretKey);
-                console.log("checking request text-", req.body);
                 const { title, description, tags } = req.body;
                 const tagsArray = tags.split(',');
                 let generatedVideoLink = null;
@@ -170,7 +167,6 @@ class FeedController {
                 const parsedLimit = Number(limit); // Default to limit of 10 if not provided or invalid
                 const skip = (parsedPage) * parsedLimit; // Calculate skip value
                 const take = parsedLimit; // Set take value equal to limit
-                console.log(skip, take);
                 const videos = yield db_1.prisma.video.findMany({
                     select: {
                         videoid: true,
@@ -317,7 +313,6 @@ class FeedController {
         return __awaiter(this, void 0, void 0, function* () {
             const videoId = req.params.videoId;
             try {
-                console.log("searching videos", videoId);
                 const video = yield db_1.prisma.video.findUnique({
                     where: {
                         videoid: parseInt(videoId),
@@ -326,6 +321,7 @@ class FeedController {
                         user: {
                             select: {
                                 name: true,
+                                id: true,
                             },
                         },
                     },
@@ -339,11 +335,13 @@ class FeedController {
                 }
                 // to do: handle where the videoId does not exist
                 video.videoLink = "https://d3f4vrh8x97mrt.cloudfront.net/" + video.videoLink;
-                console.log(video);
+                const returnData = video;
+                returnData.myUserId = req.app.locals.credentials.userId;
+                console.log(req.app.locals.credentials);
                 return res.status(200).json({
                     status: "Ok!",
                     message: "Video retrieved successfully!",
-                    result: video
+                    result: returnData
                 });
             }
             catch (error) {

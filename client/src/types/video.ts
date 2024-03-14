@@ -8,5 +8,6 @@ export interface VideoInformation{
     datePosted: Date;
     tag: string[];
     comments: Comment[];
-    user: { name: string };
+    user: { name: string,id:number};
+    myUserId:number
 }
