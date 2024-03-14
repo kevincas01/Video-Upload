@@ -1,0 +1,112 @@
+
+.feed-container{
+  display: flex;
+  flex-wrap: wrap;
+  
+  gap: 16px 50px;
+  justify-content: center;
+}
+
+.preview-video-container{
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+}
+
+.preview-video-details{
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+
+}
+
+.thumbnail{
+  border-radius: 20px;
+  
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  aspect-ratio: 3 / 2; /* 1.5 aspect ratio (width / height) */
+  object-fit: cover;
+  object-position: center;
+}
+
+
+
+#details-userPic{
+  border-radius: 50%;
+  overflow: hidden;
+  height:50px;
+  width: 50px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.details-picture img {
+ margin-top: 10px ;
+}
+.details-text{
+  margin-left: 10px;
+}
+.preview-video-details h2,
+.preview-video-details p {
+  margin: 3px;
+  word-wrap: break-word;
+  max-width: calc(25vw - 60px);
+}
+
+
+
+
+.upload-button{
+  all:unset;
+  border: 3px solid cyan;
+  border-radius: 10px;
+  padding:10px;
+
+  position: absolute;
+  right:10px;
+  top:10px;
+
+}
+
+@media (max-width: 767px) {
+
+  .search-input {
+    font-size: 10px;
+    padding: 5px;
+    width: 150px;
+  }
+  .search-button {
+    font-size: 10px;
+    padding: 5px;
+  }
+
+  .feed-container {
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center; /* Optional: Center items horizontally in column layout */
+  }
+  .mobile-thumbnail {
+    width: 75vw;
+    height:50vw;
+    /* Add any other specific styles for mobile thumbnails */
+  }
+
+  .preview-video-container-mobile{
+    display: flex;
+    flex-direction: column;
+    width: 75vw;
+  }
+  .preview-video-details h2,
+  .preview-video-details p {
+    max-width: calc(75vw - 60px);
+}
+
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Add your styles for medium-sized screens here */
+  h1 {
+    max-width: 500px; /* Adjust the max-width to your desired value for medium screens */
+  }
+}
+

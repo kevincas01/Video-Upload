@@ -1,0 +1,159 @@
+
+/* Upload page */
+.upload-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  
+}
+
+.file-selection-container{
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  min-width: 10%;
+}
+
+
+
+.file-select{
+  
+  width: 500px;
+  height: 50%;
+  border: 2px dashed rgb(107, 107, 107);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items:center;
+  cursor: pointer;
+}
+
+p{
+  height: 100%;
+  width: 100%;
+}
+
+
+.selected-file{
+  max-height: 50%;
+  max-width: 100%;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items:center;
+  cursor: pointer;
+}
+
+.selected-file video{
+  max-height: 75%;
+  max-width: 100%;
+  
+}
+
+
+
+.tags {
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tags form{
+  max-width: 100%;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  background-color: rgb(132, 131, 131);;
+  padding: 8px;
+  border-radius: 8px;
+  color:white;
+  font-weight: 500;
+}
+
+.remove-tag {
+  background-color: #ffcccc;
+  color: #ff0000;
+  border: none;
+  margin-left: 4px;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+  display: none;
+}
+
+.tag:hover .remove-tag {
+  display: inline;
+}
+
+
+
+.input-container{
+  width: 50vw;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+}
+
+.title-container,.tags-container,.thumbnail-container{
+  width: 75%;
+  height: fit-content;
+  border: 1px solid #6e6e6e;
+  border-radius: 10px;
+  padding:15px;
+  position:relative
+}
+
+
+
+.description-container{
+  width: 75%;
+  min-height: 200px;
+  height: fit-content;
+  border: 1px solid #6e6e6e;
+  border-radius: 10px;
+  padding:15px;
+  position:relative
+}
+
+
+
+#title-input, #description-input,#tag-input{
+  font-size: 25px;
+  border: none;
+  outline: none;
+  margin-bottom: 20px;
+  font-weight: 500;
+  max-width: 50%;
+}
+.count{
+  position: absolute;
+  right: 10px;
+  bottom:10px;
+}
+
+
+#title-input[contentEditable="true"]:empty:before {
+  content: "Add a title";
+  color: rgb(132, 131, 131);
+  cursor: text;
+}
+
+#description-input[contentEditable="true"]:empty:before {
+  content: "Describe your video";
+  color: rgb(132, 131, 131);
+  cursor: text;
+}
+#tag-input:empty:before{
+  color: rgb(132, 131, 131);
+}
+
